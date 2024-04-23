@@ -3,7 +3,11 @@ const Task = require("../models/task");
 const getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find();
-    res.status(200).json(tasks);
+    res.status(200).json({ tasks });
+    // res.status(200).json({ tasks, amount: tasks.length });
+    // res
+    //   .status(200)
+    //   .json({ data: { tasks }, amount: tasks.length, succes: true });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -16,7 +20,7 @@ const getTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ msg: `No tasks with id of ${taskID}` });
     }
-    return res.status(200).json(task);
+    return res.status(200).json({ task });
   } catch (error) {
     return res.status(500).json({ msg: error });
   }
@@ -29,7 +33,10 @@ const updateTask = async (req, res) => {
       new: true,
       runValidators: true,
     });
-    res.status(200).json(task);
+    if (!task) {
+      return res.status(404).json({ msg: `No tasks with id of ${taskID}` });
+    }
+    res.status(200).json({ task });
   } catch (error) {}
 };
 
